@@ -1,0 +1,48 @@
+# =========================
+# Client (React / Vite / Node)
+# =========================
+client/node_modules/
+client/dist/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# =========================
+# Server (Flask / Python)
+# =========================
+server/venv/
+server/env/
+server/__pycache__/
+*.py[cod]
+*$py.class
+server/instance/
+.pytest_cache/
+server/celerybeat-schedule.db
+
+# =========================
+# Security & Environment Variables
+# =========================
+.env
+.env.local
+.env.development
+.env.test
+.env.production
+*.pem
+
+# =========================
+# PDF Generation & Uploads (S3 / Cloudinary Handled)
+# =========================
+server/uploads/
+*.pdf
+
+# =========================
+# OS & Editor Files
+# =========================
+.DS_Store
+.vscode/
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
