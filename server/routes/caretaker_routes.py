@@ -48,7 +48,7 @@ def provision_caretaker():
               type: string
             permissions:
               type: object
-              description: JSONB object for granular access (e.g., {"manage_houses": true, "view_balances": false})
+              description: 'JSONB object for granular access (e.g., {"manage_houses": true, "view_balances": false})'
     responses:
       201:
         description: Caretaker successfully provisioned

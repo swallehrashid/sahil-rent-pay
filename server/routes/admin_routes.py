@@ -55,7 +55,7 @@ def get_dashboard_stats():
 
 
 # PUT /api/admin/landlords/<id>/processing-fee
-@admin_bp.route('/landlords/<str:id>/processing-fee', methods=['PUT'])
+@admin_bp.route('/landlords/<string:id>/processing-fee', methods=['PUT'])
 @jwt_required()
 def update_processing_fee(id):
     """
@@ -171,7 +171,7 @@ def configure_global_trial():
 
 
 # PUT /api/admin/landlords/<id>/trial-override
-@admin_bp.route('/landlords/<str:id>/trial-override', methods=['PUT'])
+@admin_bp.route('/landlords/<string:id>/trial-override', methods=['PUT'])
 @jwt_required()
 def override_landlord_trial(id):
     """
