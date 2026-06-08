@@ -10,6 +10,14 @@ import Home from './features/public/Home';
 import About from './features/public/About';
 import Contact from './features/public/Contact';
 
+// --- Authentication Pages ---
+import LandlordRegistration from './features/auth/LandlordRegistration';
+import Login from './features/auth/Login';
+import ForgotPassword from './features/auth/ForgotPassword';
+import ResetPassword from './features/auth/ResetPassword';
+import VerifyEmail from './features/auth/VerifyEmail';
+import TenantActivation from './features/auth/TenantActivation';
+
 function App() { 
   return (
     // The Router wraps the entire application to enable URL navigation
@@ -33,9 +41,17 @@ function App() {
             <Route path="/" element={<Home />} />
             <Route path="/about" element={<About />} />
             <Route path="/contact" element={<Contact />} />
+            
+            {/* Authentication Routes */}
+            <Route path="/register" element={<LandlordRegistration />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/forgot-password" element={<ForgotPassword />} />
+            <Route path="/reset-password" element={<ResetPassword />} />
+            <Route path="/verify-email" element={<VerifyEmail />} />
+            <Route path="/activate" element={<TenantActivation />} />
 
             {/* --- FUTURE ROUTES PLACEHOLDER --- */}
-            {/* As we generate Login, Register, Landlord, Admin, and Tenant dashboards, 
+            {/* As we generate Landlord, Admin, and Tenant dashboards, 
                 we will import them at the top and add their <Route> tags here. 
                 Protected routes will eventually be wrapped in <ProtectedRoute>. */}
             
@@ -52,7 +68,7 @@ function App() {
           </Routes>
         </main>
 
-        <Footer />
+        <Footer /> 
         
       </div>
     </Router>
