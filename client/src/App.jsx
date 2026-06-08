@@ -1,122 +1,62 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from './assets/vite.svg'
-import heroImg from './assets/hero.png'
-import './App.css'
+import React from 'react';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 
-function App() {
-  const [count, setCount] = useState(0)
+// --- Global Layout Components ---
+import Navbar from './components/Navbar';
+import Footer from './components/Footer';
 
+// --- Public Pages ---
+import Home from './features/public/Home';
+import About from './features/public/About';
+import Contact from './features/public/Contact';
+
+function App() { 
   return (
-    <>
-      <section id="center">
-        <div className="hero">
-          <img src={heroImg} className="base" width="170" height="179" alt="" />
-          <img src={reactLogo} className="framework" alt="React logo" />
-          <img src={viteLogo} className="vite" alt="Vite logo" />
-        </div>
-        <div>
-          <h1>Get started</h1>
-          <p>
-            Edit <code>src/App.jsx</code> and save to test <code>HMR</code>
-          </p>
-        </div>
-        <button
-          type="button"
-          className="counter"
-          onClick={() => setCount((count) => count + 1)}
-        >
-          Count is {count}
-        </button>
-      </section>
+    // The Router wraps the entire application to enable URL navigation
+    <Router>
+      {/* Global Layout Wrapper: 
+        Forces the app to be at least the height of the screen (min-h-screen).
+        Uses flex-col so the main content expands (flex-grow) to push the footer down.
+        Sets the global deep luxury navy background.
+      */}
+      <div className="flex flex-col min-h-screen bg-[#0F0246] font-sans text-white overflow-x-hidden">
+        
+        <Navbar />
 
-      <div className="ticks"></div>
+        {/* Main Content Area:
+          This is where the React Router injects the specific page components.
+          It flex-grows to take up all available space between Navbar and Footer.
+        */}
+        <main className="flex-grow">
+          <Routes>
+            {/* Public Routes */}
+            <Route path="/" element={<Home />} />
+            <Route path="/about" element={<About />} />
+            <Route path="/contact" element={<Contact />} />
 
-      <section id="next-steps">
-        <div id="docs">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#documentation-icon"></use>
-          </svg>
-          <h2>Documentation</h2>
-          <p>Your questions, answered</p>
-          <ul>
-            <li>
-              <a href="https://vite.dev/" target="_blank">
-                <img className="logo" src={viteLogo} alt="" />
-                Explore Vite
-              </a>
-            </li>
-            <li>
-              <a href="https://react.dev/" target="_blank">
-                <img className="button-icon" src={reactLogo} alt="" />
-                Learn more
-              </a>
-            </li>
-          </ul>
-        </div>
-        <div id="social">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#social-icon"></use>
-          </svg>
-          <h2>Connect with us</h2>
-          <p>Join the Vite community</p>
-          <ul>
-            <li>
-              <a href="https://github.com/vitejs/vite" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#github-icon"></use>
-                </svg>
-                GitHub
-              </a>
-            </li>
-            <li>
-              <a href="https://chat.vite.dev/" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#discord-icon"></use>
-                </svg>
-                Discord
-              </a>
-            </li>
-            <li>
-              <a href="https://x.com/vite_js" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#x-icon"></use>
-                </svg>
-                X.com
-              </a>
-            </li>
-            <li>
-              <a href="https://bsky.app/profile/vite.dev" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#bluesky-icon"></use>
-                </svg>
-                Bluesky
-              </a>
-            </li>
-          </ul>
-        </div>
-      </section>
+            {/* --- FUTURE ROUTES PLACEHOLDER --- */}
+            {/* As we generate Login, Register, Landlord, Admin, and Tenant dashboards, 
+                we will import them at the top and add their <Route> tags here. 
+                Protected routes will eventually be wrapped in <ProtectedRoute>. */}
+            
+            {/* Fallback 404 Route to prevent WSOD on bad URLs */}
+            <Route path="*" element={
+              <div className="flex flex-col items-center justify-center min-h-[60vh] text-center px-6">
+                <h2 className="text-4xl md:text-5xl font-light tracking-widest text-white/50 mb-4">404</h2>
+                <p className="text-lg text-white/70 font-light mb-8">This page is currently under construction.</p>
+                <a href="/" className="px-8 py-3 bg-[#B95F7B] text-white rounded-full hover:bg-[#a04e67] transition-colors duration-300">
+                  Return Home
+                </a>
+              </div>
+            } />
+          </Routes>
+        </main>
 
-      <div className="ticks"></div>
-      <section id="spacer"></section>
-    </>
-  )
+        <Footer />
+        
+      </div>
+    </Router>
+  );
 }
 
-export default App
+export default App;
