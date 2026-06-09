@@ -1,9 +1,10 @@
 import React from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Outlet } from 'react-router-dom';
 
 // --- Global Layout Components ---
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
+import AdminNavbar from './features/admin/components/AdminNavbar';
 
 // --- Public Pages ---
 import Home from './features/public/Home';
@@ -18,57 +19,98 @@ import ResetPassword from './features/auth/ResetPassword';
 import VerifyEmail from './features/auth/VerifyEmail';
 import TenantActivation from './features/auth/TenantActivation';
 
+// --- System Admin Pages ---
+import AdminDashboard from './features/admin/AdminDashboard';
+import LandlordManagement from './features/admin/LandlordManagement';
+import MasterLedger from './features/admin/MasterLedger';
+import GlobalSettings from './features/admin/GlobalSettings';
+
+// --- Auth Guards ---
+// import ProtectedRoute from './components/ProtectedRoute'; 
+// (Uncomment ProtectedRoute once you build it to secure the admin layout)
+
+// ==========================================
+// LAYOUT WRAPPERS (React Router v6)
+// ==========================================
+
+// 1. Public Layout (Has Marketing Navbar & Footer)
+const PublicLayout = () => {
+  return (
+    <>
+      <Navbar />
+      <main className="flex-grow">
+        <Outlet /> {/* Injects Home, Login, Contact, etc., here */}
+      </main>
+      <Footer />
+    </>
+  );
+};
+
+// 2. Admin Layout (Has Admin Navbar, NO Footer)
+const AdminLayout = () => {
+  return (
+    <>
+      <AdminNavbar />
+      <main className="flex-grow bg-[#0F0246]">
+        <Outlet /> {/* Injects Dashboard, Ledger, Settings, etc., here */}
+      </main>
+    </>
+  );
+};
+
+
+// ==========================================
+// MAIN APP COMPONENT
+// ==========================================
 function App() { 
   return (
-    // The Router wraps the entire application to enable URL navigation
     <Router>
-      {/* Global Layout Wrapper: 
-        Forces the app to be at least the height of the screen (min-h-screen).
-        Uses flex-col so the main content expands (flex-grow) to push the footer down.
-        Sets the global deep luxury navy background.
-      */}
+      {/* Global CSS Reset & Base Background */}
       <div className="flex flex-col min-h-screen bg-[#0F0246] font-sans text-white overflow-x-hidden">
         
-        <Navbar />
-
-        {/* Main Content Area:
-          This is where the React Router injects the specific page components.
-          It flex-grows to take up all available space between Navbar and Footer.
-        */}
-        <main className="flex-grow">
-          <Routes>
-            {/* Public Routes */}
+        <Routes>
+          
+          {/* -------------------------------------- */}
+          {/* PUBLIC & AUTH ROUTES (Using Public Layout) */}
+          {/* -------------------------------------- */}
+          <Route element={<PublicLayout />}>
             <Route path="/" element={<Home />} />
             <Route path="/about" element={<About />} />
             <Route path="/contact" element={<Contact />} />
             
-            {/* Authentication Routes */}
             <Route path="/register" element={<LandlordRegistration />} />
             <Route path="/login" element={<Login />} />
             <Route path="/forgot-password" element={<ForgotPassword />} />
             <Route path="/reset-password" element={<ResetPassword />} />
             <Route path="/verify-email" element={<VerifyEmail />} />
             <Route path="/activate" element={<TenantActivation />} />
+          </Route>
 
-            {/* --- FUTURE ROUTES PLACEHOLDER --- */}
-            {/* As we generate Landlord, Admin, and Tenant dashboards, 
-                we will import them at the top and add their <Route> tags here. 
-                Protected routes will eventually be wrapped in <ProtectedRoute>. */}
-            
-            {/* Fallback 404 Route to prevent WSOD on bad URLs */}
-            <Route path="*" element={
-              <div className="flex flex-col items-center justify-center min-h-[60vh] text-center px-6">
-                <h2 className="text-4xl md:text-5xl font-light tracking-widest text-white/50 mb-4">404</h2>
-                <p className="text-lg text-white/70 font-light mb-8">This page is currently under construction.</p>
-                <a href="/" className="px-8 py-3 bg-[#B95F7B] text-white rounded-full hover:bg-[#a04e67] transition-colors duration-300">
-                  Return Home
-                </a>
-              </div>
-            } />
-          </Routes>
-        </main>
+          {/* -------------------------------------- */}
+          {/* ADMIN PORTAL ROUTES (Using Admin Layout) */}
+          {/* -------------------------------------- */}
+          {/* Wrap this in <ProtectedRoute allowedRoles={['admin']}> when ready */}
+          <Route path="/admin" element={<AdminLayout />}>
+            <Route index element={<AdminDashboard />} />
+            <Route path="landlords" element={<LandlordManagement />} />
+            <Route path="ledger" element={<MasterLedger />} />
+            <Route path="settings" element={<GlobalSettings />} />
+          </Route>
 
-        <Footer /> 
+          {/* -------------------------------------- */}
+          {/* FALLBACK 404 ROUTE */}
+          {/* -------------------------------------- */}
+          <Route path="*" element={
+            <div className="flex flex-col items-center justify-center min-h-screen text-center px-6 bg-[#0F0246]">
+              <h2 className="text-4xl md:text-5xl font-light tracking-widest text-white/50 mb-4">404</h2>
+              <p className="text-lg text-white/70 font-light mb-8">This pathway does not exist.</p>
+              <a href="/" className="px-8 py-3 bg-[#B95F7B] text-white rounded-full hover:bg-[#a04e67] transition-colors duration-300">
+                Return to Surface
+              </a>
+            </div>
+          } />
+
+        </Routes>
         
       </div>
     </Router>
