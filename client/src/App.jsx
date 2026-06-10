@@ -6,6 +6,7 @@ import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import AdminNavbar from './features/admin/components/AdminNavbar';
 import CaretakerNavbar from './features/caretaker/components/CaretakerNavbar';
+import LandlordNavbar from './features/landlord/components/LandlordNavbar'; // Added LandlordNavbar
 
 // --- Public Pages ---
 import Home from './features/public/Home';
@@ -25,6 +26,15 @@ import AdminDashboard from './features/admin/AdminDashboard';
 import LandlordManagement from './features/admin/LandlordManagement';
 import MasterLedger from './features/admin/MasterLedger';
 import GlobalSettings from './features/admin/GlobalSettings';
+
+// --- Landlord Operations Pages ---
+import LandlordDashboard from './features/landlord/LandlordDashboard';
+import PropertyManagement from './features/landlord/PropertyManagement';
+import TenantManagement from './features/landlord/TenantManagement';
+import BillingFines from './features/landlord/BillingFines';
+import PaymentsLedger from './features/landlord/PaymentsLedger';
+import Reports from './features/landlord/Reports';
+import CaretakerManagement from './features/landlord/CaretakerManagement';
 
 // --- Caretaker Operations Pages ---
 import CaretakerDashboard from './features/caretaker/CaretakerDashboard';
@@ -64,7 +74,19 @@ const AdminLayout = () => {
   );
 };
 
-// 3. Caretaker Layout (Has Caretaker Restricted Navbar, NO Footer)
+// 3. Landlord Layout (Has Landlord Navbar, NO Footer)
+const LandlordLayout = () => {
+  return (
+    <>
+      <LandlordNavbar />
+      <main className="flex-grow bg-[#0F0246]">
+        <Outlet /> {/* Injects LandlordDashboard, PropertyManagement, etc., here */}
+      </main>
+    </>
+  );
+};
+
+// 4. Caretaker Layout (Has Caretaker Restricted Navbar, NO Footer)
 const CaretakerLayout = () => {
   return (
     <>
@@ -113,6 +135,20 @@ function App() {
             <Route path="landlords" element={<LandlordManagement />} />
             <Route path="ledger" element={<MasterLedger />} />
             <Route path="settings" element={<GlobalSettings />} />
+          </Route>
+
+          {/* -------------------------------------- */}
+          {/* LANDLORD PORTAL ROUTES (Using Landlord Layout) */}
+          {/* -------------------------------------- */}
+          {/* Wrap this in <ProtectedRoute allowedRoles={['landlord']}> when ready */}
+          <Route path="/landlord" element={<LandlordLayout />}>
+            <Route index element={<LandlordDashboard />} />
+            <Route path="properties" element={<PropertyManagement />} />
+            <Route path="tenants" element={<TenantManagement />} />
+            <Route path="billing" element={<BillingFines />} />
+            <Route path="ledger" element={<PaymentsLedger />} />
+            <Route path="reports" element={<Reports />} />
+            <Route path="caretakers" element={<CaretakerManagement />} />
           </Route>
 
           {/* -------------------------------------- */}
