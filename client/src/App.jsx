@@ -5,6 +5,7 @@ import { BrowserRouter as Router, Routes, Route, Outlet } from 'react-router-dom
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import AdminNavbar from './features/admin/components/AdminNavbar';
+import CaretakerNavbar from './features/caretaker/components/CaretakerNavbar';
 
 // --- Public Pages ---
 import Home from './features/public/Home';
@@ -25,9 +26,14 @@ import LandlordManagement from './features/admin/LandlordManagement';
 import MasterLedger from './features/admin/MasterLedger';
 import GlobalSettings from './features/admin/GlobalSettings';
 
+// --- Caretaker Operations Pages ---
+import CaretakerDashboard from './features/caretaker/CaretakerDashboard';
+import TenantBalances from './features/caretaker/TenantBalances';
+import UtilityEntry from './features/caretaker/UtilityEntry';
+
 // --- Auth Guards ---
 // import ProtectedRoute from './components/ProtectedRoute'; 
-// (Uncomment ProtectedRoute once you build it to secure the admin layout)
+// (Uncomment ProtectedRoute once you build it to secure the layouts)
 
 // ==========================================
 // LAYOUT WRAPPERS (React Router v6)
@@ -53,6 +59,18 @@ const AdminLayout = () => {
       <AdminNavbar />
       <main className="flex-grow bg-[#0F0246]">
         <Outlet /> {/* Injects Dashboard, Ledger, Settings, etc., here */}
+      </main>
+    </>
+  );
+};
+
+// 3. Caretaker Layout (Has Caretaker Restricted Navbar, NO Footer)
+const CaretakerLayout = () => {
+  return (
+    <>
+      <CaretakerNavbar />
+      <main className="flex-grow bg-[#0F0246]">
+        <Outlet /> {/* Injects CaretakerDashboard, TenantBalances, UtilityEntry here */}
       </main>
     </>
   );
@@ -95,6 +113,16 @@ function App() {
             <Route path="landlords" element={<LandlordManagement />} />
             <Route path="ledger" element={<MasterLedger />} />
             <Route path="settings" element={<GlobalSettings />} />
+          </Route>
+
+          {/* -------------------------------------- */}
+          {/* CARETAKER PORTAL ROUTES (Using Caretaker Layout) */}
+          {/* -------------------------------------- */}
+          {/* Wrap this in <ProtectedRoute allowedRoles={['caretaker']}> when ready */}
+          <Route path="/caretaker" element={<CaretakerLayout />}>
+            <Route index element={<CaretakerDashboard />} />
+            <Route path="balances" element={<TenantBalances />} />
+            <Route path="utilities" element={<UtilityEntry />} />
           </Route>
 
           {/* -------------------------------------- */}
