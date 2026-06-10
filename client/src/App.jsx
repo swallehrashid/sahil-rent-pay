@@ -6,7 +6,8 @@ import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import AdminNavbar from './features/admin/components/AdminNavbar';
 import CaretakerNavbar from './features/caretaker/components/CaretakerNavbar';
-import LandlordNavbar from './features/landlord/components/LandlordNavbar'; // Added LandlordNavbar
+import LandlordNavbar from './features/landlord/components/LandlordNavbar';
+import TenantNavbar from './features/tenant/components/TenantNavbar'; // Added TenantNavbar
 
 // --- Public Pages ---
 import Home from './features/public/Home';
@@ -40,6 +41,11 @@ import CaretakerManagement from './features/landlord/CaretakerManagement';
 import CaretakerDashboard from './features/caretaker/CaretakerDashboard';
 import TenantBalances from './features/caretaker/TenantBalances';
 import UtilityEntry from './features/caretaker/UtilityEntry';
+
+// --- Tenant Operations Pages ---
+import TenantDashboard from './features/tenant/TenantDashboard';
+import PaymentHistory from './features/tenant/PaymentHistory';
+import ClaimPayment from './features/tenant/ClaimPayment';
 
 // --- Auth Guards ---
 // import ProtectedRoute from './components/ProtectedRoute'; 
@@ -93,6 +99,18 @@ const CaretakerLayout = () => {
       <CaretakerNavbar />
       <main className="flex-grow bg-[#0F0246]">
         <Outlet /> {/* Injects CaretakerDashboard, TenantBalances, UtilityEntry here */}
+      </main>
+    </>
+  );
+};
+
+// 5. Tenant Layout (Has Tenant Navbar, NO Footer)
+const TenantLayout = () => {
+  return (
+    <>
+      <TenantNavbar />
+      <main className="flex-grow bg-[#0F0246]">
+        <Outlet /> {/* Injects TenantDashboard, PaymentHistory, ClaimPayment here */}
       </main>
     </>
   );
@@ -159,6 +177,16 @@ function App() {
             <Route index element={<CaretakerDashboard />} />
             <Route path="balances" element={<TenantBalances />} />
             <Route path="utilities" element={<UtilityEntry />} />
+          </Route>
+
+          {/* -------------------------------------- */}
+          {/* TENANT PORTAL ROUTES (Using Tenant Layout) */}
+          {/* -------------------------------------- */}
+          {/* Wrap this in <ProtectedRoute allowedRoles={['tenant']}> when ready */}
+          <Route path="/tenant" element={<TenantLayout />}>
+            <Route index element={<TenantDashboard />} />
+            <Route path="history" element={<PaymentHistory />} />
+            <Route path="claim" element={<ClaimPayment />} />
           </Route>
 
           {/* -------------------------------------- */}
